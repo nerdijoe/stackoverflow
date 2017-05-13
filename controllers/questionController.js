@@ -35,7 +35,8 @@ exports.create = (req, res, next) => {
 exports.get_all = (req, res, next) => {
   Question
     .find()
-    .populate('user_id', 'answers')
+    .populate('user_id')
+    .populate('answers.user_id')
     .exec( (err, questions) => {
       if(err) res.send(err);
 
@@ -51,7 +52,8 @@ exports.add_answer = (req, res, next) => {
     if(question) {
       let newAnswer = {
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        user_id: req.body.user_id
       }
 
       question.answers.push(newAnswer);
