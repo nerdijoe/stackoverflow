@@ -22,7 +22,18 @@ exports.create = (req, res, next) => {
       newQuestion.save((err, question) => {
         if (err) res.send(err)
 
-        res.send(question)
+        // need to return question object with populated data
+        Question.findById(question.id)
+        .populate('author')
+        .populate('answers.author')
+        .populate('votes.author')
+        .exec((err, q) => {
+          if (err) res.send(err)
+          console.log("*********q", q)
+          res.send(q)
+        })
+
+        // res.send(question)
       })
     } // end if(user)
   }) // end User.findById
@@ -46,6 +57,7 @@ exports.get_one = (req, res, next) => {
   Question.findById(req.params.id)
     .populate('author')
     .populate('answers.author')
+    .populate('votes.author')
     .exec((err, question) => {
       if (err) res.send(err)
 
