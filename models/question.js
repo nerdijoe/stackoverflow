@@ -1,20 +1,23 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
 var answerSchema = new Schema({
-  title: {type: String, required:true},
-  content: {type:String, required: true},
-  user_id: {type: Schema.Types.ObjectId, ref: 'User'}
+  title: {type: String, required: true},
+  content: {type: String, required: true},
+  user_id: {type: Schema.Types.ObjectId, ref: 'User'},
+  created_at: {type: Date, default: Date.now},
+  updated_at: {type: Date, default: Date.now}
 })
 
 var questionSchema = new Schema({
   title: {type: String, required: true},
   content: {type: String, required: true},
   answers: [answerSchema],
-  user_id: {type: Schema.Types.ObjectId, ref: 'User'}
+  user_id: {type: Schema.Types.ObjectId, ref: 'User'},
+  created_at: {type: Date, default: Date.now},
+  updated_at: {type: Date, default: Date.now}
 })
 
 var Question = mongoose.model('Question', questionSchema)
 
-module.exports = Question;
+module.exports = Question
