@@ -2,8 +2,8 @@
   <div id="app">
 
     <div class="ui container">
-      <navbar :loginStatus='is_login' @navbar-signout='signOut'></navbar>
-      <router-view @signInSuccess='signIn' :loginStatus='is_login'></router-view>
+      <navbar :loginStatus='is_login' @navbar-signout='signOut' :user='user'></navbar>
+      <router-view @signInSuccess='signIn' :loginStatus='is_login' :user='user'></router-view>
     </div>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
   },
   data() {
     return {
-      is_login: false
+      is_login: false,
+      user: { username: ''}
     }
   },
   methods: {
@@ -29,10 +30,11 @@ export default {
       this.is_login = false;
       this.$router.push('/');
     },
-    signIn() {
+    signIn(username) {
       this.checkLoginStatus();
       this.$router.push('/');
-      console.log('App vue signIn')
+      this.user.username = username;
+      console.log(`App vue signIn ${username}`)
     },
     checkLoginStatus() {
       if(localStorage.token!= null) {

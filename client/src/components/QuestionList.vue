@@ -7,14 +7,18 @@
         <i class="huge cube middle aligned icon"></i>
 
         <div class="content">
-          <a class="header" @click="seeQuestionDetail(question._id)">
+          <a class="ui large header" @click="seeQuestionDetail(question._id)">
             {{ question.title }}
           </a>
           <div class="description">
             <p>{{ question.content }}</p>
             <p>
               asked on {{ question.created_at }}, by {{ question.author.name }}
-              <a @click="editQuestion(question)"><i class="big edit icon"></i></a>
+              <span v-if="loginStatus && user.username === question.author.username">
+                <a @click="editQuestion(question)"><i class="big edit icon"></i></a>
+                <a @click="deleteQuestion(question._id)"><i class="big trash outline icon"></i></a>
+
+              </span>
             </p>
 
 
@@ -37,7 +41,7 @@
 
 <script>
   export default {
-    props: ['questions'],
+    props: ['questions', 'loginStatus', 'user'],
     data () {
       return {
 
@@ -50,6 +54,16 @@
       editQuestion(question) {
         this.$emit('clickedEditQuestion', question)
         console.log('QuestionList editQuestion')
+      },
+      deleteQuestion(question_id) {
+
+        var r = confirm("Are you sure?")
+        if(r){
+          this.$emit('clickedDeleteQuestion', question_id)
+          console.log(`QuestionList deleteQuestion ${question_id}`)
+
+        }
+
       },
       upVote(question_id) {
         this.$emit('clickedUpVote', question_id);

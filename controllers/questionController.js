@@ -79,21 +79,23 @@ exports.update = (req, res, next) => {
 exports.delete = (req, res, next) => {
   Question.findByIdAndRemove(req.params.id, (err, question) => {
     if (err) res.send(err)
+    else {
+      if(question){
 
-    if(question){
+        var message = {
+          message: `Question '${question.title}' has been deleted.`,
+          id: question._id
+        }
 
-      var message = {
-        message: `Question '${question.title}' has been deleted.`,
-        id: question._id
+        res.send(message);
+      } else {
+        console.log("here")
+        var message = {
+          message: ``,
+          error: 'Question cannot be deleted'
+        }
+        res.send(message)
       }
-
-      res.send(message);
-    } else {
-      var message = {
-        message: ``,
-        error: 'Question cannot be deleted'
-      }
-      res.send(message)
     }
 
   })
