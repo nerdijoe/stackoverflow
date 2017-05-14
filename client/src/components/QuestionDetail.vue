@@ -44,6 +44,11 @@
             </div>
             <div class="text">
               {{ answer.content }}
+
+              <span v-if="loginStatus && user.username === answer.author.username">
+                <a @click="deleteAnswer(answer._id)"><i class="big trash outline icon"></i></a>
+
+              </span>
             </div>
             <div class="actions">
               <!-- <a class="reply">Reply</a> -->
@@ -79,7 +84,7 @@
     components: {
       AnswerForm
     },
-    props: ['id', 'loginStatus'],
+    props: ['id', 'loginStatus', 'user'],
     data () {
       return {
         question: { answers: [], votes: []},
@@ -123,6 +128,37 @@
         })
 
       }, // end of createAnswer
+      deleteAnswer(answer_id) {
+
+        var r = confirm("Are you sure?")
+        if(r){
+
+          let self = this
+
+          axios.post(`http://localhost:3000/questions/delete_answer/${self.question._id}`, {
+            answer_id: answer_id
+          }, {
+            headers: { token: localStorage.token}
+          })
+          .then (response => {
+            console.log(response.data)
+
+            if(!response.data.hasOwnProperty('error')){
+              let index = self.question.answers.findIndex( a => a._id === answer_id )
+              self.question.answers.splice(index, 1)
+            }else {
+              alert('Delete fail!')
+            }
+
+
+          })
+          .catch (err => {
+            console.log(err)
+          })
+
+        }
+
+      }, // end of deleteAnswer
       resetAnswerForm () {
         this.answerForm = { title: '', content: ''};
       },

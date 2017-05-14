@@ -141,11 +141,49 @@ exports.add_answer = (req, res, next) => {
             res.send(que)
           })
 
-      // res.send(q)
       })
-    }
+    } // end of if(question)
   })
 }
+
+exports.del_answer = (req, res, next) => {
+  var user_id = req.decoded._id
+  var answer_id = req.body.answer_id
+
+  Question.findById(req.params.id, (err, question) => {
+    if (err) res.send(err)
+
+    if (question) {
+      let index = question.answers.findIndex( a => a._id == answer_id )
+
+      if(index != -1) {
+        question.answers.splice(index,1)
+
+        // don't forget to save
+        question.save( (err, q) => {
+          if(err) res.send(err)
+          res.send(q);
+        })
+
+
+      }
+      else {
+        var message = {
+          message: ``,
+          error: 'Answer cannot be deleted'
+        }
+        res.send(message)
+
+
+      }
+
+
+    } // end of if(question)
+  })
+
+
+}
+
 
 exports.upvote = (req, res, next) => {
   var user_id = req.decoded._id
