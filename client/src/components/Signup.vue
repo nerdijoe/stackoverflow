@@ -74,6 +74,7 @@
 
 
     	} // end of onSubmitSignUpForm
+
 		}
 	}
 </script>

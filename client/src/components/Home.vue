@@ -22,6 +22,7 @@ Join them; it only takes a minute: </p>
       </div> <!-- end of banner -->
 
     </div> <!-- end of container-blue -->
+
 	</div>
 </template>
 
@@ -37,7 +38,8 @@ Join them; it only takes a minute: </p>
 .container-blue {
   background: #FFBC42;
   /*#0099FF;*/
-  border-radius: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
 
 }
 
