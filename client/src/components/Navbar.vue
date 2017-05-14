@@ -16,26 +16,31 @@
       </a>
 
       <div class="right menu">
-      <router-link
-        to="signin"
-        class="ui item"
-        active-class="active"
-        exact
-      >
-        Sign in
-      </router-link>
-      <router-link
-        to="signup"
-        class="ui item"
-        active-class="active"
-        exact
-      >
-        Sign up
-      </router-link>
-        <a class="ui item">
-          Logout
+        <router-link
+          v-if="!loginStatus"
+          to="signin"
+          class="ui item"
+          active-class="active"
+          exact
+        >
+          Sign in
+        </router-link>
+
+        <router-link
+          v-if="!loginStatus"
+          to="signup"
+          class="ui item"
+          active-class="active"
+          exact
+        >
+          Sign up
+        </router-link>
+
+        <a class="ui item" v-if="loginStatus" @click="signOut">
+          Sign out
         </a>
-      </div>
+
+      </div> <!-- end of right menu-->
     </div>
 
   </div>
@@ -43,7 +48,26 @@
 
 <script>
   export default {
+    props: ['loginStatus'],
+    data() {
+      return {
 
+      }
+    },
+    methods: {
+      signOut () {
+        this.$emit('navbar-signout')
+      },
+      checkLoginStatus () {
+
+      }
+    },
+    created() {
+      // this.checkLoginStatus()
+    },
+    computed() {
+      // this.checkLoginStatus();
+    }
   }
 </script>
 

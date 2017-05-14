@@ -15,7 +15,7 @@ exports.create = (req, res, next) => {
         title: req.body.title,
         content: req.body.content,
         answers: [],
-        user_id: user_id
+        author: user_id
       })
 
       newQuestion.save((err, question) => {
@@ -31,8 +31,8 @@ exports.create = (req, res, next) => {
 exports.get_all = (req, res, next) => {
   Question
     .find()
-    .populate('user_id')
-    .populate('answers.user_id')
+    .populate('author')
+    .populate('answers.author')
     .exec((err, questions) => {
       if (err) res.send(err)
 
@@ -42,8 +42,8 @@ exports.get_all = (req, res, next) => {
 
 exports.get_one = (req, res, next) => {
   Question.findById(req.params.id)
-    .populate('user_id')
-    .populate('answers.user_id')
+    .populate('author')
+    .populate('answers.author')
     .exec((err, question) => {
       if (err) res.send(err)
 
@@ -52,6 +52,8 @@ exports.get_one = (req, res, next) => {
 }
 
 exports.add_answer = (req, res, next) => {
+  var user_id = req.decoded._id
+
   Question.findById(req.params.id, (err, question) => {
     if (err) res.send(err)
 
@@ -59,7 +61,7 @@ exports.add_answer = (req, res, next) => {
       let newAnswer = {
         title: req.body.title,
         content: req.body.content,
-        user_id: req.body.user_id
+        author: user_id
       }
 
       question.answers.push(newAnswer)
@@ -67,7 +69,16 @@ exports.add_answer = (req, res, next) => {
       question.save((err, q) => {
         if (err) res.send(err)
 
-        res.send(q)
+        Question.findById(req.params.id)
+          .populate('author')
+          .populate('answers.author')
+          .exec((err, que) => {
+            if (err) res.send(err)
+
+            res.send(que)
+          })
+
+      // res.send(q)
       })
     }
   })

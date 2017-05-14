@@ -15,15 +15,62 @@
     <p>
       {{ question.content }}
     </p>
+
+
+    <div class="metadata">
+      <span class="date">asked on {{ question.created_at }}</span>
+    </div>
+
+    <div class="answer-container" v-if="question.answers.length > 0">
+
+      <div class="ui comments">
+        <h3 class="ui dividing header">Answers</h3>
+        <div class="comment" v-for="answer in question.answers">
+          <a class="avatar">
+            <i class="user icon"></i>
+          </a>
+          <div class="content">
+            <a class="author">{{answer.author.name}}</a>
+            <div class="metadata">
+              <span class="date">answered {{answer.created_at}}</span>
+            </div>
+            <div class="text">
+              {{ answer.content }}
+            </div>
+            <!-- <div class="actions">
+              <a class="reply">Reply</a>
+            </div> -->
+          </div>
+        </div>
+
+
+
+      </div> <!-- end of ui comments -->
+
+
+
+    </div>
+
+    <answer-form v-if="loginStatus" :answerForm='answerForm' @clickedCreateAnswer='createAnswer'></answer-form>
+
   </div>
 </template>
 
 <script>
+  import AnswerForm from './AnswerForm'
+
   export default {
-    props: ['id'],
+    components: {
+      AnswerForm
+    },
+    props: ['id', 'loginStatus'],
     data () {
       return {
-        question: {}
+        question: { answers: []},
+        answerForm: {
+          title: '',
+          content: ''
+        }
       }
     },
     methods: {
@@ -38,6 +85,30 @@
         .catch ( err => {
           console.log(err);
         })
+      },
+      createAnswer() {
+        let self = this
+
+        axios.post(`http://localhost:3000/questions/add_answer/${self.id}`, {
+          title: `reply to question ${self.id}`,
+          content: self.answerForm.content
+        }, {
+          headers: { token : localStorage.token }
+        })
+        .then (response => {
+          let updatedQuestionDetail = response.data
+          console.log("updatedQuestionDetail", updatedQuestionDetail)
+
+          self.question = updatedQuestionDetail
+          this.resetAnswerForm()
+        })
+        .catch (err => {
+          console.log(err)
+        })
+
+      }, // end of createAnswer
+      resetAnswerForm () {
+        this.answerForm = { title: '', content: ''};
       }
     }, // end of methods
     created () {
@@ -49,6 +120,10 @@
 <style scoped>
 .question_detail {
   margin-top: 20px;
+}
+
+.answer-container {
+  margin-top: 30px;
 }
 
 </style>

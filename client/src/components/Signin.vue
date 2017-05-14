@@ -47,6 +47,8 @@ export default {
 	        localStorage.setItem('token', response.data);
 	        console.log(localStorage.token);
 
+          self.$emit('signInSuccess')
+
 	        self.$router.push('/')
 
 	      })
@@ -54,7 +56,7 @@ export default {
 	        console.log("**** Error signin")
 	        console.log(error);
 
-	        
+
 	      });
 
 

@@ -1,94 +1,89 @@
 <template>
 	<div>
-	  <div class="container-blue">
-
-      <div class="banner">
-        <p class="banner-text-1">
-          Join the StickStack Community
-        </p>
-
-        <p class="banner-text-2">Stick Stack is a community of 7.1 million programmers, just like you, helping each other.
-Join them; it only takes a minute: </p>
-
-        <div class="button-big-center">
-          <button class="massive ui orange button" id="btnSignUpBig">Get Started</button>
-        </div>
-
-
-        <p class="banner-text-2">
-          Sign up for a free account today :)
-        </p>
-
-      </div> <!-- end of banner -->
-
-    </div> <!-- end of container-blue -->
-
-		<question-list></question-list>
+		<banner v-if="!loginStatus"></banner>
+		<question-form v-if="loginStatus" :questionForm='questionForm' @createQuestionClicked='createQuestion'></question-form>
+		<question-list :questions='questions'></question-list>
 	</div>
 </template>
 
 
 
 <script>
+	import Banner from './Banner'
 	import QuestionList from './QuestionList'
 	import QuestionDetail from './QuestionDetail'
+	import QuestionForm from './QuestionForm'
+
 
 	export default {
+		props: ['loginStatus'],
+		data() {
+			return {
+				questions: [],
+				questionForm: {
+					title: '',
+					content: ''
+				}
+
+			}
+		}, // end of data
 		components: {
+			Banner,
 			QuestionList,
-			QuestionDetail
+			QuestionDetail,
+			QuestionForm
+		},
+		methods: {
+			listQuestions() {
+	      let self = this;
+
+	      axios.get('http://localhost:3000/questions', {
+	        headers: { token: localStorage.token }
+	      })
+	      .then ( response => {
+	        console.log(response.data);
+	        self.questions = response.data;
+	      })
+	      .catch( err => {
+	        console.log(err);
+	      })
+	    }, // end of listQuestions
+	    createQuestion() {
+	      console.log('*** Home createQuestion')
+				let self = this
+				axios.post('http://localhost:3000/questions',{
+					title: self.questionForm.title,
+					content: self.questionForm.content
+				}, {
+					headers: { token: localStorage.token }
+				})
+				.then (response => {
+					let newQuestion = response.data;
+					console.log("newQuestion", newQuestion);
+
+					self.questions.push(newQuestion);
+					self.resetQuestionForm();
+				})
+				.catch (err => {
+					console.log(err)
+				})
+
+	    }, // end of createQuestion
+			resetQuestionForm() {
+				this.questionForm = { title: '', content: ''}
+				console.log("resetQuestionForm")
+			}
+
+		}, // end of methods
+		created() {
+			this.listQuestions();
+			console.log(this.questions)
 		}
 	}
 </script>
 
 
 <style scoped>
-.container-blue {
-  background: #FFBC42;
-  /*#0099FF;*/
-  border-radius: 10px;
-  margin-top: 10px;
-
-}
-
-.banner {
-  margin: auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 100%;
-  /*border-top: 1px solid #0099FF; */
-}
-
-.banner-text-1 {
-  margin: auto;
-  font-size: 3em;
-  text-align: center;
-  font-weight: bold;
-  color: white;
-  max-width: 700px;
-  padding-top: 0px;
-  padding-bottom: 0px; }
-
-.banner-text-2 {
-  margin: auto;
-  font-size: 1.5em;
-  text-align: center;
-  font-weight: bold;
-  color: white;
-  max-width: 700px;
-  padding-top: 10px;
-  padding-bottom: 10px; }
-
-.button-big-center {
-  margin: auto;
-  padding: 10px;
-  width: 600px;
-  height: 110px;
-  line-height: 110px;
-  text-align: center;
-}
 
 
 </style>
