@@ -12,7 +12,13 @@
           </a>
           <div class="description">
             <p>{{ question.content }}</p>
-            <p>asked on {{ question.created_at }}, by {{ question.author.name }}</p>
+            <p>
+              asked on {{ question.created_at }}, by {{ question.author.name }}
+              <a @click="editQuestion(question)"><i class="big edit icon"></i></a>
+            </p>
+
+
+
             <div class="meta">
               <a class="like">
                 <i class="big like icon"></i> {{ countVotes(question.votes) }} Likes
@@ -40,6 +46,10 @@
     methods: {
       seeQuestionDetail(question_id) {
         this.$router.push('/question-detail/' + question_id)
+      },
+      editQuestion(question) {
+        this.$emit('clickedEditQuestion', question)
+        console.log('QuestionList editQuestion')
       },
       upVote(question_id) {
         this.$emit('clickedUpVote', question_id);
