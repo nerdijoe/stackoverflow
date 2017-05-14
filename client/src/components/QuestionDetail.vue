@@ -53,7 +53,7 @@
               </div>
 
               <a @click="answerUpVote(answer._id)"><i class="large pointing up icon"></i></a>
-              <!-- <a @click="downVote(question._id)"><i class="large pointing down icon"></i></a> -->
+              <a @click="answerDownVote(answer._id)"><i class="large pointing down icon"></i></a>
 
             </div>
           </div>
@@ -180,8 +180,33 @@
 
 
       }, // end of downVote
-      answerUpVote(question_id) {
-        console.log(`answerUpVote ${question_id}`)
+      answerUpVote(answer_id) {
+        console.log(`answerUpVote answer_id=${answer_id}, question._id=${this.question._id}`)
+
+        let self = this
+
+        axios.post(`http://localhost:3000/questions/answerupvote/${this.question._id}`,{
+          answer_id: answer_id
+        }, {
+          headers: { token: localStorage.token }
+        })
+        .then (response => {
+          let updatedQuestion = response.data;
+          console.log("aaaa")
+          if(updatedQuestion.hasOwnProperty('message')) {
+            alert(updatedQuestion.message);
+          } else {
+            console.log("updatedQuestion", updatedQuestion);
+            // let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
+            // self.questions.splice(index, 1, updatedQuestion)
+            self.question = updatedQuestion;
+          }
+        })
+        .catch (err => {
+          console.log(err)
+        })
+
+
       }
 
     }, // end of methods
