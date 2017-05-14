@@ -8,6 +8,8 @@ router.post('/', helper.verify_normal, question_controller.create)
 router.get('/', question_controller.get_all)
 router.get('/:id', question_controller.get_one)
 
+router.put('/:id', helper.verify_normal, question_controller.update)
+
 router.post('/add_answer/:id', helper.verify_normal, question_controller.add_answer)
 router.post('/upvote/:id', helper.verify_normal, question_controller.upvote)
 router.post('/downvote/:id', helper.verify_normal, question_controller.downvote)

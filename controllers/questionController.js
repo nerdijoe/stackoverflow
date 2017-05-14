@@ -53,6 +53,28 @@ exports.get_one = (req, res, next) => {
     })
 }
 
+
+exports.update = (req, res, next) => {
+  // Question.findById(req.params.id, (err, question) => {
+
+  // })
+
+  Question.findByIdAndUpdate(req.params.id, {
+      $set: req.body
+    }, {
+      new: true
+    })
+    .exec((error, question) => {
+        if (error) {
+            res.json({
+                error
+            })
+        } else {
+            res.send(question)
+        }
+    })
+}
+
 exports.add_answer = (req, res, next) => {
   var user_id = req.decoded._id
 
