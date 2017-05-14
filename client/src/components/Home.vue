@@ -2,7 +2,7 @@
 	<div>
 		<banner v-if="!loginStatus"></banner>
 		<question-form v-if="loginStatus" :questionForm='questionForm' @createQuestionClicked='createQuestion'></question-form>
-		<question-list :questions='questions' :loginStatus="loginStatus" @clickedUpVote='upVote' @clickedDownVote='downVote' @clickedEditQuestion='editQuestion' @clickedDeleteQuestion='deleteQuestion'></question-list>
+		<question-list :questions='questions' :loginStatus="loginStatus" :user="user" @clickedUpVote='upVote' @clickedDownVote='downVote' @clickedEditQuestion='editQuestion' @clickedDeleteQuestion='deleteQuestion'></question-list>
 	</div>
 </template>
 
