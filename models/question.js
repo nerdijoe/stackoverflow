@@ -11,7 +11,8 @@ var answerSchema = new Schema({
   content: {type: String, required: true},
   author: {type: Schema.Types.ObjectId, ref: 'User'},
   created_at: {type: Date, default: Date.now},
-  updated_at: {type: Date, default: Date.now}
+  updated_at: {type: Date, default: Date.now},
+  votes: [voteSchema]
 })
 
 var questionSchema = new Schema({

@@ -16,7 +16,7 @@
       </a>
 
       <div class="right menu">
-        <router-link
+        <!-- <router-link
           v-if="!loginStatus"
           to="signin"
           class="ui item"
@@ -34,7 +34,16 @@
           exact
         >
           Sign up
-        </router-link>
+        </router-link> -->
+
+        <a class="ui item" v-if="!loginStatus" @click="clickSignIn">
+          Sign in
+        </a>
+
+        <a class="ui item" v-if="!loginStatus" @click="clickSignUp">
+          Sign up
+        </a>
+
 
         <a class="ui item" v-if="loginStatus" @click="signOut">
           Sign out
@@ -60,6 +69,12 @@
       },
       checkLoginStatus () {
 
+      },
+      clickSignIn() {
+        this.$router.push('/signin')
+      },
+      clickSignUp() {
+        this.$router.push('/signup')
       }
     },
     created() {

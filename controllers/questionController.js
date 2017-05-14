@@ -63,7 +63,8 @@ exports.add_answer = (req, res, next) => {
       let newAnswer = {
         title: req.body.title,
         content: req.body.content,
-        author: user_id
+        author: user_id,
+        votes: []
       }
 
       question.answers.push(newAnswer)
@@ -115,7 +116,7 @@ exports.upvote = (req, res, next) => {
         })
       }else {
         let error = {
-          message: 'User has upvoted, so he cannot vote again.'
+          message: 'User has voted, so he cannot vote again.'
         }
         res.send(error)
       }
@@ -146,7 +147,7 @@ exports.downvote = (req, res, next) => {
         })
       }else {
         let error = {
-          message: 'User has downvoted, so he cannot vote again.'
+          message: 'User has voted, so he cannot vote again.'
         }
         res.send(error)
       }
