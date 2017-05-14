@@ -55,7 +55,10 @@ export default {
 	        // get the token, save in local storage
 	        console.log(response);
 	        localStorage.setItem('token', response.data);
-	        console.log(localStorage.token);
+	        localStorage.setItem('username', self.user_form.username);
+
+	        console.log("token",localStorage.token);
+	        console.log("localStorage.username",localStorage.username);
 
           self.$emit('signInSuccess', self.user_form.username)
 

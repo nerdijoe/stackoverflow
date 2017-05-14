@@ -30,23 +30,27 @@ export default {
   methods: {
     signOut() {
       localStorage.removeItem('token');
+      localStorage.removeItem('username');
       this.is_login = false;
       this.$router.push('/');
     },
     signIn(username) {
       this.checkLoginStatus();
       this.$router.push('/');
-      this.user.username = username;
+      // this.user.username = username;
       console.log(`App vue signIn ${username}`)
     },
     checkLoginStatus() {
-      if(localStorage.token!= null) {
+      if(localStorage.token != null && localStorage.username != null) {
         this.is_login = true;
-        console.log(`checkLoginStatus - User has signed in`)
+        this.user.username = localStorage.username;
+        console.log(`checkLoginStatus - ${this.user.username} has signed in`)
       }
     }
-  } // end of methods
-
+  }, // end of methods
+  created() {
+    this.checkLoginStatus()
+  }
 }
 </script>
 
