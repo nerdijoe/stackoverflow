@@ -42,7 +42,7 @@
         e.preventDefault();
 
         console.log('createQuestion');
-        this.$emit('createQuestionClicked')
+        this.$emit('createQuestionClicked', this.questionForm)
       }
     }
   }
