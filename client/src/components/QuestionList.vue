@@ -3,8 +3,10 @@
     <h2>Top Questions</h2>
 
     <div class="ui relaxed divided list">
-      <div class="ui loading segment" v-if="questions.length == 0">
-        <p></p>
+      <div class="ui segment" v-if="questions.length == 0">
+        <div class="ui active dimmer">
+          <div class="ui text loader">Loading</div>
+        </div>
         <p></p>
       </div>
 

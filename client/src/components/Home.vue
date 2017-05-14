@@ -135,9 +135,14 @@
 				})
 				.then (response => {
 					let updatedQuestion = response.data;
-					console.log("aaaa")
+
 					if(updatedQuestion.hasOwnProperty('message')) {
-						alert(updatedQuestion.message);
+
+						if(updatedQuestion.message === 'jwt malformed')
+							alert("Please Login to vote.")
+						else
+							alert(updatedQuestion.message);
+						
 					} else {
 						console.log("updatedQuestion", updatedQuestion);
 						let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
@@ -161,7 +166,10 @@
 					let updatedQuestion = response.data;
 					console.log("aaaa")
 					if(updatedQuestion.hasOwnProperty('message')) {
-						alert(updatedQuestion.message);
+						if(updatedQuestion.message === 'jwt malformed')
+							alert("Please Login to vote.")
+						else
+							alert(updatedQuestion.message);
 					} else {
 						console.log("updatedQuestions", updatedQuestion);
 						let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
