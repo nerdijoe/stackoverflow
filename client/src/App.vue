@@ -4,6 +4,7 @@
     <div class="ui container">
       <navbar :loginStatus='is_login' @navbar-signout='signOut' :user='user'></navbar>
       <router-view @signInSuccess='signIn' :loginStatus='is_login' :user='user'></router-view>
+      <footer-custom></footer-custom>
     </div>
   </div>
 </template>
@@ -11,12 +12,14 @@
 <script>
 import Hello from './components/Hello'
 import Navbar from './components/Navbar'
+import FooterCustom from './components/FooterCustom'
 
 export default {
   name: 'app',
   components: {
     Hello,
-    Navbar
+    Navbar,
+    FooterCustom
   },
   data() {
     return {
