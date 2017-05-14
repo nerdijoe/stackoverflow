@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    
+
     <div class="ui container">
-      <navbar></navbar>
-      <router-view></router-view>
+      <navbar :loginStatus='is_login' @navbar-signout='signOut'></navbar>
+      <router-view @signInSuccess='signIn' :loginStatus='is_login'></router-view>
     </div>
   </div>
 </template>
@@ -17,7 +17,31 @@ export default {
   components: {
     Hello,
     Navbar
-  }
+  },
+  data() {
+    return {
+      is_login: false
+    }
+  },
+  methods: {
+    signOut() {
+      localStorage.removeItem('token');
+      this.is_login = false;
+      this.$router.push('/');
+    },
+    signIn() {
+      this.checkLoginStatus();
+      this.$router.push('/');
+      console.log('App vue signIn')
+    },
+    checkLoginStatus() {
+      if(localStorage.token!= null) {
+        this.is_login = true;
+        console.log(`checkLoginStatus - User has signed in`)
+      }
+    }
+  } // end of methods
+
 }
 </script>
 
