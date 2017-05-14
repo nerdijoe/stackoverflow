@@ -3,6 +3,11 @@
     <h2>Top Questions</h2>
 
     <div class="ui relaxed divided list">
+      <div class="ui loading segment" v-if="questions.length == 0">
+        <p></p>
+        <p></p>
+      </div>
+
       <div class="item" v-for="question in questions">
         <i class="huge cube middle aligned icon"></i>
 
@@ -23,10 +28,14 @@
 
 
 
-            <div class="meta">
+  <!--           <div class="meta">
               <a class="like">
                 <i class="big like icon"></i> {{ countVotes(question.votes) }} Likes
               </a>
+            </div> -->
+
+            <div class="ui label">
+              <i class="big red like icon"></i> {{ countVotes(question.votes) }}
             </div>
 
             <a @click="upVote(question._id)"><i class="big pointing up icon"></i></a>

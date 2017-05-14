@@ -4,7 +4,7 @@
     <div class="ui secondary menu">
 
       <a class="ui item" @click="clickLogo">
-        Logo
+        <img class="ui small image" src="../assets/stickstack_logo02.png">
       </a>
 
       <router-link
