@@ -195,3 +195,42 @@ exports.answerUpvote = (req, res, next) => {
 
     })
 }
+
+exports.answerDownvote = (req, res, next) => {
+  var user_id = req.decoded._id
+  var answer_id = req.body.answer_id
+
+  Question.findById(req.params.id)
+    .populate('author')
+    .populate('answers.author')
+    .populate('votes.author')
+    .exec((err, question) => {
+      if (err) res.send(err)
+      console.log('question', question)
+      console.log('question.answers', question.answers)
+      // find answer in the question.answers array
+      let index_answer = question.answers.findIndex((ans) => ans._id == answer_id)
+      // if found
+      if (index_answer != -1) {
+        let index_vote = question.answers[index_answer].votes.findIndex(vote => vote.author == user_id)
+        if (index_vote == -1) {
+          let newvote = {
+            author: user_id,
+            vote: -1
+          }
+          question.answers[index_answer].votes.push(newvote)
+
+          question.save((err, q) => {
+            if (err) res.send(err)
+            res.send(q)
+          })
+        }else {
+          let error = {
+            message: 'User has voted, so he cannot vote again.'
+          }
+          res.send(error)
+        }
+      } // if (index_answer != -1)
+
+    })
+}

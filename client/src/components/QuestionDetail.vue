@@ -181,11 +181,39 @@
 
       }, // end of downVote
       answerUpVote(answer_id) {
-        console.log(`answerUpVote answer_id=${answer_id}, question._id=${this.question._id}`)
+        console.log(`answerUpVote question._id=${this.question._id}, answer_id=${answer_id}`)
 
         let self = this
 
         axios.post(`http://localhost:3000/questions/answerupvote/${this.question._id}`,{
+          answer_id: answer_id
+        }, {
+          headers: { token: localStorage.token }
+        })
+        .then (response => {
+          let updatedQuestion = response.data;
+          console.log("aaaa")
+          if(updatedQuestion.hasOwnProperty('message')) {
+            alert(updatedQuestion.message);
+          } else {
+            console.log("updatedQuestion", updatedQuestion);
+            // let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
+            // self.questions.splice(index, 1, updatedQuestion)
+            self.question = updatedQuestion;
+          }
+        })
+        .catch (err => {
+          console.log(err)
+        })
+
+
+      }, // end of answerUpVote
+      answerDownVote(answer_id) {
+        console.log(`answerDownVote question._id=${this.question._id}, answer_id=${answer_id}`)
+
+        let self = this
+
+        axios.post(`http://localhost:3000/questions/answerdownvote/${this.question._id}`,{
           answer_id: answer_id
         }, {
           headers: { token: localStorage.token }

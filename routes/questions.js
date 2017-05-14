@@ -12,4 +12,6 @@ router.post('/add_answer/:id', helper.verify_normal, question_controller.add_ans
 router.post('/upvote/:id', helper.verify_normal, question_controller.upvote)
 router.post('/downvote/:id', helper.verify_normal, question_controller.downvote)
 router.post('/answerupvote/:id', helper.verify_normal, question_controller.answerUpvote)
+router.post('/answerdownvote/:id', helper.verify_normal, question_controller.answerDownvote)
+
 module.exports = router
