@@ -21,6 +21,14 @@
       <span class="date">asked on {{ question.created_at }}</span>
     </div>
 
+    <div class="ui label">
+      <i class="big red like icon"></i> {{ countVotes(question.votes) }}
+    </div>
+
+    <a @click="upVote(question._id)"><i class="big pointing up icon"></i></a>
+    <a @click="downVote(question._id)"><i class="big pointing down icon"></i></a>
+
+
     <div class="answer-container" v-if="question.answers.length > 0">
 
       <div class="ui comments">
@@ -66,7 +74,7 @@
     props: ['id', 'loginStatus'],
     data () {
       return {
-        question: { answers: []},
+        question: { answers: [], votes: []},
         answerForm: {
           title: '',
           content: ''
@@ -85,7 +93,7 @@
         .catch ( err => {
           console.log(err);
         })
-      },
+      }, // end of getQuestionDetail
       createAnswer() {
         let self = this
 
@@ -109,7 +117,62 @@
       }, // end of createAnswer
       resetAnswerForm () {
         this.answerForm = { title: '', content: ''};
-      }
+      },
+      countVotes(votes_arr) {
+        console.log('countVotes')
+        return votes_arr.reduce( (a,b) => { return a + b.vote }, 0)
+      },
+      upVote(question_id) {
+        console.log('*** QuestionDetail upVote')
+        let self = this
+
+        axios.post(`http://localhost:3000/questions/upvote/${question_id}`,{}, {
+          headers: { token: localStorage.token }
+        })
+        .then (response => {
+          let updatedQuestion = response.data;
+          console.log("aaaa")
+          if(updatedQuestion.hasOwnProperty('message')) {
+            alert(updatedQuestion.message);
+          } else {
+            console.log("updatedQuestion", updatedQuestion);
+            // let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
+            // self.questions.splice(index, 1, updatedQuestion)
+            self.question = updatedQuestion;
+          }
+        })
+        .catch (err => {
+          console.log(err)
+        })
+
+
+      }, // end of upVote
+      downVote(question_id) {
+        console.log('*** QuestionDetail downVote')
+        let self = this
+
+        axios.post(`http://localhost:3000/questions/downvote/${question_id}`,{}, {
+          headers: { token: localStorage.token }
+        })
+        .then (response => {
+          let updatedQuestion = response.data;
+          console.log("aaaa")
+          if(updatedQuestion.hasOwnProperty('message')) {
+            alert(updatedQuestion.message);
+          } else {
+            console.log("updatedQuestions", updatedQuestion);
+            // let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
+            // self.questions.splice(index, 1, updatedQuestion)
+            self.question = updatedQuestion;
+          }
+        })
+        .catch (err => {
+          console.log(err)
+        })
+
+
+      } // end of downVote
+
     }, // end of methods
     created () {
       this.getQuestionDetail()
