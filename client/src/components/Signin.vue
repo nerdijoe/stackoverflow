@@ -57,7 +57,7 @@ export default {
 	        localStorage.setItem('token', response.data);
 	        console.log(localStorage.token);
 
-          self.$emit('signInSuccess')
+          self.$emit('signInSuccess', self.user_form.username)
 
 	        self.$router.push('/')
 

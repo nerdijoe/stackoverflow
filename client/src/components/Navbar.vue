@@ -2,18 +2,20 @@
   <div class="navbar">
 
     <div class="ui secondary menu">
+
+      <a class="ui item" @click="clickLogo">
+        Logo
+      </a>
+
       <router-link
         to="/home"
         class="ui item"
         active-class="active"
         exact
       >
-        stickstack
+        Home
       </router-link>
 
-      <a class="item">
-        Messages
-      </a>
 
       <div class="right menu">
         <!-- <router-link
@@ -44,6 +46,7 @@
           Sign up
         </a>
 
+        <a class="ui item" v-if="loginStatus">Hi, {{user.username}} </a>
 
         <a class="ui item" v-if="loginStatus" @click="signOut">
           Sign out
@@ -57,7 +60,7 @@
 
 <script>
   export default {
-    props: ['loginStatus'],
+    props: ['loginStatus', 'user'],
     data() {
       return {
 
@@ -69,6 +72,9 @@
       },
       checkLoginStatus () {
 
+      },
+      clickLogo() {
+        this.$router.push('/')
       },
       clickSignIn() {
         this.$router.push('/signin')

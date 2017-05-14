@@ -2,7 +2,7 @@
 	<div>
 		<banner v-if="!loginStatus"></banner>
 		<question-form v-if="loginStatus" :questionForm='questionForm' @createQuestionClicked='createQuestion'></question-form>
-		<question-list :questions='questions' @clickedUpVote='upVote' @clickedDownVote='downVote' @clickedEditQuestion='editQuestion'></question-list>
+		<question-list :questions='questions' :loginStatus="loginStatus" @clickedUpVote='upVote' @clickedDownVote='downVote' @clickedEditQuestion='editQuestion' @clickedDeleteQuestion='deleteQuestion'></question-list>
 	</div>
 </template>
 
@@ -16,7 +16,7 @@
 
 
 	export default {
-		props: ['loginStatus'],
+		props: ['loginStatus', 'user'],
 		data() {
 			return {
 				questions: [ {author:{name:''}, votes:[]} ],
@@ -100,6 +100,28 @@
 	    	this.questionForm = { ...question }
 	    	console.log("Home editQuestion")
 	    }, // end of editQuestion
+	    deleteQuestion(question_id) {
+	    	console.log(`Home deleteQuestion ${question_id}`)
+	    	let self = this
+	    	axios.delete(`http://localhost:3000/questions/${question_id}`, {
+	    		headers: { token: localStorage.token }
+	    	})
+	    	.then ( response => {
+	    		console.log(response.data)
+
+	    		if(response.data.hasOwnProperty('id')){
+	    			let index = self.questions.findIndex( q => q._id === question_id)
+	    			self.questions.splice(index, 1)
+	    		}else {
+	    			alert('Delete fail!')
+	    		}
+
+	    	})
+	    	.catch( err => {
+	    		console.log(err)
+	    	})
+
+	    }, // end of deleteQuestion
 			resetQuestionForm() {
 				this.questionForm = { _id: null, title: '', content: ''}
 				console.log("resetQuestionForm")
