@@ -2,7 +2,7 @@
 	<div>
 		<banner v-if="!loginStatus"></banner>
 		<question-form v-if="loginStatus" :questionForm='questionForm' @createQuestionClicked='createQuestion'></question-form>
-		<question-list :questions='questions'></question-list>
+		<question-list :questions='questions' @clickedUpVote='upVote' @clickedDownVote='downVote'></question-list>
 	</div>
 </template>
 
@@ -19,7 +19,7 @@
 		props: ['loginStatus'],
 		data() {
 			return {
-				questions: [],
+				questions: [ {author:{name:''}, votes:[]} ],
 				questionForm: {
 					title: '',
 					content: ''
@@ -72,7 +72,57 @@
 			resetQuestionForm() {
 				this.questionForm = { title: '', content: ''}
 				console.log("resetQuestionForm")
-			}
+			},
+			upVote(question_id) {
+				console.log('*** Home upVote')
+				let self = this
+
+				axios.post(`http://localhost:3000/questions/upvote/${question_id}`,{}, {
+					headers: { token: localStorage.token }
+				})
+				.then (response => {
+					let updatedQuestion = response.data;
+					console.log("aaaa")
+					if(updatedQuestion.hasOwnProperty('message')) {
+						alert(updatedQuestion.message);
+					} else {
+						console.log("updatedQuestion", updatedQuestion);
+						let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
+						self.questions.splice(index, 1, updatedQuestion)
+					}
+				})
+				.catch (err => {
+					console.log(err)
+				})
+
+
+			}, // end of upVote
+			downVote(question_id) {
+				console.log('*** Home downVote')
+				let self = this
+
+				axios.post(`http://localhost:3000/questions/downvote/${question_id}`,{}, {
+					headers: { token: localStorage.token }
+				})
+				.then (response => {
+					let updatedQuestion = response.data;
+					console.log("aaaa")
+					if(updatedQuestion.hasOwnProperty('message')) {
+						alert(updatedQuestion.message);
+					} else {
+						console.log("updatedQuestions", updatedQuestion);
+						let index = self.questions.findIndex( q => q._id === updatedQuestion._id )
+						self.questions.splice(index, 1, updatedQuestion)
+
+					}
+				})
+				.catch (err => {
+					console.log(err)
+				})
+
+
+			} // end of downVote
+
 
 		}, // end of methods
 		created() {
