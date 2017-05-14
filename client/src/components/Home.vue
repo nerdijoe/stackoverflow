@@ -7,7 +7,7 @@
           Join the StickStack Community
         </p>
 
-        <p class="banner-text-2">Stack Overflow is a community of 7.1 million programmers, just like you, helping each other. 
+        <p class="banner-text-2">Stick Stack is a community of 7.1 million programmers, just like you, helping each other.
 Join them; it only takes a minute: </p>
 
         <div class="button-big-center">
@@ -23,13 +23,21 @@ Join them; it only takes a minute: </p>
 
     </div> <!-- end of container-blue -->
 
+		<question-list></question-list>
 	</div>
 </template>
 
 
-<script>
-	export default {
 
+<script>
+	import QuestionList from './QuestionList'
+	import QuestionDetail from './QuestionDetail'
+
+	export default {
+		components: {
+			QuestionList,
+			QuestionDetail
+		}
 	}
 </script>
 
@@ -81,6 +89,6 @@ Join them; it only takes a minute: </p>
   line-height: 110px;
   text-align: center;
 }
-	
+
 
 </style>
