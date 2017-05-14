@@ -15,7 +15,8 @@ exports.create = (req, res, next) => {
         title: req.body.title,
         content: req.body.content,
         answers: [],
-        author: user_id
+        author: user_id,
+        votes: []
       })
 
       newQuestion.save((err, question) => {
@@ -33,6 +34,7 @@ exports.get_all = (req, res, next) => {
     .find()
     .populate('author')
     .populate('answers.author')
+    .populate('votes.author')
     .exec((err, questions) => {
       if (err) res.send(err)
 
@@ -82,4 +84,35 @@ exports.add_answer = (req, res, next) => {
       })
     }
   })
+}
+
+exports.upvote = (req, res, next) => {
+  var user_id = req.decoded._id
+
+  Question.findById(req.params.id)
+    .populate('author')
+    .populate('answers.author')
+    .populate('votes.author')
+    .exec((err, question) => {
+      if (err) res.send(err)
+
+      let index = question.votes.findIndex((vote) => vote.author._id == user_id)
+      if (index == -1) {
+        let upvote = {
+          author: user_id,
+          vote: 1
+        }
+        question.votes.push(upvote)
+
+        question.save((err, q) => {
+          if (err) res.send(err)
+          res.send(q)
+        })
+      }else {
+        let error = {
+          message: 'User has upvoted, so he cannot vote again.'
+        }
+        res.send(error)
+      }
+    })
 }

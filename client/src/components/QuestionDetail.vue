@@ -118,9 +118,9 @@
 </script>
 
 <style scoped>
-/*.question_detail {
+.question_detail {
   margin-top: 20px;
-}*/
+}
 
 .answer-container {
   margin-top: 30px;
