@@ -45,9 +45,17 @@
             <div class="text">
               {{ answer.content }}
             </div>
-            <!-- <div class="actions">
-              <a class="reply">Reply</a>
-            </div> -->
+            <div class="actions">
+              <!-- <a class="reply">Reply</a> -->
+
+              <div class="ui label">
+                <i class="red like icon"></i> {{ countVotes(answer.votes) }}
+              </div>
+
+              <a @click="answerUpVote(answer._id)"><i class="large pointing up icon"></i></a>
+              <!-- <a @click="downVote(question._id)"><i class="large pointing down icon"></i></a> -->
+
+            </div>
           </div>
         </div>
 
@@ -171,7 +179,10 @@
         })
 
 
-      } // end of downVote
+      }, // end of downVote
+      answerUpVote(question_id) {
+        console.log(`answerUpVote ${question_id}`)
+      }
 
     }, // end of methods
     created () {
