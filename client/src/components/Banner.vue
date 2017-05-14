@@ -10,7 +10,7 @@
 Join them; it only takes a minute: </p>
 
       <div class="button-big-center">
-        <button class="massive ui orange button" id="btnSignUpBig">Get Started</button>
+        <button class="massive ui orange button" id="btnSignUpBig" @click='goToSignUpForm'>Get Started</button>
       </div>
 
       <p class="banner-text-2">
@@ -25,7 +25,12 @@ Join them; it only takes a minute: </p>
 
 <script>
   export default {
-    props: ['loginStatus']
+    props: ['loginStatus'],
+    methods: {
+      goToSignUpForm() {
+        this.$router.push('/signup')
+      }
+    }
   }
 </script>
 
