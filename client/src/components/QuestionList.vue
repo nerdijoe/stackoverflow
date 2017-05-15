@@ -15,12 +15,17 @@
 
         <div class="content">
           <a class="ui large header" @click="seeQuestionDetail(question._id)">
-            {{ question.title }}
+            {{ question.title }} <a class="ui orange circular label"> {{ question.answers.length }} </a>
           </a>
           <div class="description">
             <p>{{ question.content }}</p>
             <p>
               asked on {{ question.created_at }}, by {{ question.author.name }}
+            </p>
+            <p>
+              <!-- <a class="ui orange circular label"> {{ question.answers.length }} </a> -->
+            </p>
+            <p>
               <span v-if="loginStatus && user.username === question.author.username">
                 <a @click="editQuestion(question)"><i class="big edit icon"></i></a>
                 <a @click="deleteQuestion(question._id)"><i class="big trash outline icon"></i></a>

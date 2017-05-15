@@ -32,6 +32,7 @@ export default {
       localStorage.removeItem('token');
       localStorage.removeItem('username');
       this.is_login = false;
+      this.user = { username: ''};
       this.$router.push('/');
     },
     signIn(username) {
