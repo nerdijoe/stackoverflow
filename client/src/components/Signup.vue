@@ -71,6 +71,7 @@
 
 	            console.log(self);
 	            console.log(self.$router);
+	            alert('Sign up successful');
 	            self.$router.push('/');
 	        }
 	      })

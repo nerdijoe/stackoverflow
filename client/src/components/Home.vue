@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<banner v-if="!loginStatus"></banner>
-		<question-form v-if="loginStatus" :questionForm='questionForm' @createQuestionClicked='createQuestion'></question-form>
+		<question-form v-if="loginStatus" :questionForm='questionForm' @createQuestionClicked='createQuestion' @clickedCancelUpdate='resetQuestionForm'></question-form>
 		<question-list :questions='questions' :loginStatus="loginStatus" :user="user" @clickedUpVote='upVote' @clickedDownVote='downVote' @clickedEditQuestion='editQuestion' @clickedDeleteQuestion='deleteQuestion'></question-list>
 	</div>
 </template>
@@ -19,7 +19,7 @@
 		props: ['loginStatus', 'user'],
 		data() {
 			return {
-				questions: [ {author:{name:''}, votes:[]} ],
+				questions: [ {author:{name:''}, answers: [], votes:[]} ],
 				questionForm: {
 					_id: null,
 					title: '',

@@ -82,7 +82,18 @@ exports.update = (req, res, next) => {
                 error
             })
         } else {
-            res.send(question)
+
+          // return the populated question object
+          Question.findById(question.id)
+          .populate('author')
+          .populate('answers.author')
+          .populate('votes.author')
+          .exec((err, q) => {
+            if (err) res.send(err)
+            console.log("*********q", q)
+            res.send(q)
+          })
+            
         }
     })
 }
