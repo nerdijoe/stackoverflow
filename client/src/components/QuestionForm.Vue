@@ -19,7 +19,9 @@
 
       <div class="fields">
         <div class="ten wide field">
-          <button id="btnSubmitLogin" class="ui button green right floated" type="submit">Ask a question</button>
+          <button id="btnSubmitLogin" class="ui button green right floated" type="submit"> {{ questionForm._id ? 'Update' : 'Ask a question' }} </button>
+          <button id="btnSubmitLogin" v-if="questionForm._id" class="ui button red right floated" type="submit" v-on:click.prevent="cancelUpdate"> Cancel </button>
+
         </div>
       </div>
 
@@ -43,6 +45,10 @@
 
         console.log('createQuestion');
         this.$emit('createQuestionClicked', this.questionForm)
+      },
+      cancelUpdate() {
+        console.log('QuestionForm cancelUpdate')
+        this.$emit('clickedCancelUpdate')
       }
     }
   }
